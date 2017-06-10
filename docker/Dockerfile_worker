@@ -1,0 +1,4 @@
+FROM spark-base
+
+ENTRYPOINT ["/bin/bash"]
+CMD ["/usr/local/spark-2.1.1-bin-hadoop2.7/bin/spark-class","org.apache.spark.deploy.worker.Worker","spark://master:7077"]

@@ -1,0 +1,12 @@
+# SIMPLE ALPINE LINUX + JAVA 8 BASE
+FROM develar/java:8u45
+
+# SPARK + CURL + BASH
+ARG SPARK_ARCHIVE=https://d3kbcqa49mib13.cloudfront.net/spark-2.1.1-bin-hadoop2.7.tgz
+RUN apk add --update curl bash && \
+    rm -rf /var/cache/apk/* && \
+    curl -s $SPARK_ARCHIVE | tar -xz -C /usr/local/
+
+# SETTING SPARK WORKING DIRECTORY AND START BASH
+WORKDIR /usr/local/spark-2.1.1-bin-hadoop2.7/bin/
+ENTRYPOINT ["/bin/bash"]
