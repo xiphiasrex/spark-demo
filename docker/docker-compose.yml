@@ -1,24 +1,34 @@
 version: '2.0'
+
 services:
   spark-master:
-    ports: ["5500:8080"]
+    ports: ["5500:8080","7077:7077"]
+    build:
+      context: .
+      dockerfile: Dockerfile_base
     image: "spark-base"
     container_name: spark-master
     working_dir: /usr/local/spark-2.1.1-bin-hadoop2.7/bin
     command: ["spark-class", "org.apache.spark.deploy.master.Master"]
-    volumes: ["/wrk/docker:/wrk/docker/"]
-  
+    volumes: ["/wrk/data:/wrk/data/"]
+
   spark-worker-1: 
+    ports: ["8081:8081"]
+    build:
+      context: .
+      dockerfile: Dockerfile_base
     image: "spark-base"
     working_dir: /usr/local/spark-2.1.1-bin-hadoop2.7/bin
-    command: ["spark-class","org.apache.spark.deploy.worker.Worker","spark://spark-master:7077","-c","2","-m","4G"]
-    volumes: ["/wrk/docker:/wrk/docker/"]
+    command: ["spark-class","org.apache.spark.deploy.worker.Worker","spark://spark-master:7077","-c","2","-m","1500M"]
+    volumes: ["/wrk/data:/wrk/data/"]
   
   spark-worker-2: 
+    ports: ["8082:8081"]
+    build:
+      context: .
+      dockerfile: Dockerfile_base
     image: "spark-base"
     working_dir: /usr/local/spark-2.1.1-bin-hadoop2.7/bin
-    command: ["spark-class","org.apache.spark.deploy.worker.Worker","spark://spark-master:7077","-c","2","-m","4G"]
-    volumes: ["/wrk/docker:/wrk/docker/"]
-    
-
-      
+    command: ["spark-class","org.apache.spark.deploy.worker.Worker","spark://spark-master:7077","-c","2","-m","1500M"]
+    volumes: ["/wrk/data:/wrk/data/"]
+ 
